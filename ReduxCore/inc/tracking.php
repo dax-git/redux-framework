@@ -57,9 +57,13 @@
                 $this->parent = $parent;
 
 
-                $this->options             = get_option( 'redux-framework-tracking' );
-                $this->options['dev_mode'] = $parent->args['dev_mode'];
+				$this->options                   = get_option( 'redux-framework-tracking' );
+				$this->options['dev_mode']       = $parent->args['dev_mode'];
 
+				// Let the developer choose if tracking is enabled or not
+				if ( isset( $parent->args['allow_tracking'] ) ) {
+					$this->options['allow_tracking'] = $parent->args['allow_tracking'];
+				}
 
                 if ( ! isset( $this->options['hash'] ) || ! $this->options['hash'] || empty( $this->options['hash'] ) ) {
                     $this->options['hash'] = md5( network_site_url() . '-' . $_SERVER['REMOTE_ADDR'] );
