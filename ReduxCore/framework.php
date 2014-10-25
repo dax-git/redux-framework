@@ -124,11 +124,11 @@
                         self::$_url     = trailingslashit( self::$wp_content_url . $relative_url );
                     }
                 }
-                
+
                 self::$_url = apply_filters( "redux/_url", self::$_url );
                 self::$_dir = apply_filters( "redux/_dir", self::$_dir );
                 self::$_is_plugin = apply_filters( "redux/_is_plugin", self::$_is_plugin );
-                
+
             }
 
             // ::init()
@@ -1620,10 +1620,12 @@
                     'border',
                     'dimensions',
                     'select',
+                    'thebestwp_select',
                     'select_image',
                     'slider',
                     'spacing',
                     'typography',
+                    'thebestwp_typography',
                     'color_scheme',
                     'css_layout'
 
@@ -2693,7 +2695,7 @@
                      * @param string CSS that get sent to the compiler hook
                      */
                     do_action( "redux/options/{$this->args['opt_name']}/compiler", $this->options, $this->compilerCSS, $this->transients['changed_values'] );
-                    
+
                     /**
                      * action 'redux/options/{opt_name}/compiler/advanced'
                      *
