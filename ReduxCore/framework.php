@@ -68,7 +68,7 @@
             // ATTENTION DEVS
             // Please update the build number with each push, no matter how small.
             // This will make for easier support when we ask users what version they are using.
-            public static $_version = '3.3.9.1';
+            public static $_version = '3.3.9.6';
             public static $_dir;
             public static $_url;
             public static $_upload_dir;
@@ -125,8 +125,8 @@
                     }
                 }
 
-                self::$_url = apply_filters( "redux/_url", self::$_url );
-                self::$_dir = apply_filters( "redux/_dir", self::$_dir );
+                self::$_url       = apply_filters( "redux/_url", self::$_url );
+                self::$_dir       = apply_filters( "redux/_dir", self::$_dir );
                 self::$_is_plugin = apply_filters( "redux/_is_plugin", self::$_is_plugin );
 
             }
@@ -385,19 +385,19 @@
 
                     // Output dynamic CSS
                     // Frontend: Maybe enqueue dynamic CSS and Google fonts
-                    if( empty( $this->args['output_location'] ) || in_array( 'frontend', $this->args['output_location'] ) ) {
+                    if ( empty( $this->args['output_location'] ) || in_array( 'frontend', $this->args['output_location'] ) ) {
                         add_action( 'wp_head', array( &$this, '_output_css' ), 150 );
                         add_action( 'wp_enqueue_scripts', array( &$this, '_enqueue_output' ), 150 );
                     }
 
                     // Login page: Maybe enqueue dynamic CSS and Google fonts
-                    if( in_array( 'login', $this->args['output_location'] ) ) {
+                    if ( in_array( 'login', $this->args['output_location'] ) ) {
                         add_action( 'login_head', array( &$this, '_output_css' ), 150 );
                         add_action( 'login_enqueue_scripts', array( &$this, '_enqueue_output' ), 150 );
                     }
 
                     // Admin area: Maybe enqueue dynamic CSS and Google fonts
-                    if( in_array( 'admin', $this->args['output_location'] ) ) {
+                    if ( in_array( 'admin', $this->args['output_location'] ) ) {
                         add_action( 'admin_head', array( &$this, '_output_css' ), 150 );
                         add_action( 'admin_enqueue_scripts', array( &$this, '_enqueue_output' ), 150 );
                     }
@@ -1646,17 +1646,17 @@
 
                     // JS
                     wp_register_script(
-                        'select2-sortable-js',
-                        self::$_url . 'assets/js/vendor/select2.sortable.min.js',
+                        'redux-select2-sortable-js',
+                        self::$_url . 'assets/js/vendor/redux.select2.sortable' . $min . '.js',
                         array( 'jquery' ),
-                        filemtime( self::$_dir . 'assets/js/vendor/select2.sortable.min.js' ),
+                        filemtime( self::$_dir . 'assets/js/vendor/redux.select2.sortable' . $min . '.js' ),
                         true
                     );
 
                     wp_register_script(
                         'select2-js',
                         self::$_url . 'assets/js/vendor/select2/select2.min.js',
-                        array( 'jquery', 'select2-sortable-js' ),
+                        array( 'jquery', 'redux-select2-sortable-js' ),
                         filemtime( self::$_dir . 'assets/js/vendor/select2/select2.min.js' ),
                         true
                     );
@@ -1935,7 +1935,7 @@
 
                 if ( isset( $this->args['dev_mode'] ) && $this->args['dev_mode'] == true ) {
 
-                    $base                        = admin_url('admin-ajax.php') . '?action=redux_p&url=';
+                    $base                        = admin_url( 'admin-ajax.php' ) . '?action=redux_p&url=';
                     $url                         = $base . urlencode( 'http://ads.reduxframework.com/api/index.php?js&g&1&v=2' ) . '&proxy=' . urlencode( $base );
                     $this->localize_data['rAds'] = '<span data-id="1" class="mgv1_1"><script type="text/javascript">(function(){if (mysa_mgv1_1) return; var ma = document.createElement("script"); ma.type = "text/javascript"; ma.async = true; ma.src = "' . $url . '"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ma, s) })();var mysa_mgv1_1=true;</script></span>';
                 }
@@ -2675,7 +2675,8 @@
                 }
 
                 if ( isset( $this->transients['run_compiler'] ) && $this->transients['run_compiler'] ) {
-                    $this->args['output_tag'] = false;
+
+                    $this->no_output = true;
                     $this->_enqueue_output();
 
 
@@ -2812,7 +2813,9 @@
                     foreach ( $keys as $key ) {
                         $plugin_options[ $key ] = $this->options[ $key ];
                     }
-                    unset( $plugin_options['redux-no_panel'] );
+                    if ( isset( $plugin_options['redux-no_panel'] ) ) {
+                        unset( $plugin_options['redux-no_panel'] );
+                    }
                 }
 
                 if ( ! empty( $this->hidden_perm_fields ) && is_array( $this->hidden_perm_fields ) ) {
@@ -2902,6 +2905,11 @@
                     $plugin_options = $this->options_defaults;
 
                     $this->transients['changed_values'] = array();
+
+                    if ( empty( $this->options ) ) {
+                        $this->options = $this->options_defaults;
+                    }
+
                     foreach ( $this->options as $key => $value ) {
                         if ( isset( $plugin_options[ $key ] ) && $value != $plugin_options[ $key ] ) {
                             $this->transients['changed_values'][ $key ] = $value;
@@ -2913,6 +2921,7 @@
 
                     //setcookie('redux-compiler-' . $this->args['opt_name'], 1, time() + 1000, "/");
                     //setcookie("redux-saved-{$this->args['opt_name']}", 'defaults', time() + 1000, "/");
+
                     $this->set_transients(); // Update the transients
 
                     return $plugin_options;
@@ -2953,12 +2962,17 @@
 
                     //setcookie("redux-saved-{$this->args['opt_name']}", 'defaults_section', time() + 1000, "/");
                     unset( $plugin_options['defaults'], $plugin_options['defaults_section'], $plugin_options['import'], $plugin_options['import_code'], $plugin_options['import_link'], $plugin_options['compiler'], $plugin_options['redux-section'] );
+
                     $this->set_transients();
 
                     return $plugin_options;
                 }
 
-                $this->transients['last_save_mode'] = "normal"; // Last save mode
+                if ($this->transients['last_save_mode'] != 'remove') {
+                    $this->transients['last_save_mode'] = "normal"; // Last save mode
+                } else {
+                    $this->transients['last_save_mode'] = '';
+                }
 
 
                 // Validate fields (if needed)
@@ -3023,7 +3037,6 @@
                 }
 
                 $this->set_transients( $this->transients );
-
 
                 return $plugin_options;
             }
@@ -3468,7 +3481,7 @@
                          * @param string  translated "settings imported" text
                          */
                         echo '<div class="saved_notice admin-notice notice-yellow"><strong>' . apply_filters( "redux-defaults-section-text-{$this->args['opt_name']}", __( 'Section Defaults Restored!', 'redux-framework' ) ) . '</strong></div>';
-                    } else {
+                    } else if ( $this->transients['last_save_mode'] == "normal") {
                         /**
                          * action 'redux/options/{opt_name}/saved'
                          *
@@ -3483,8 +3496,10 @@
                          */
                         echo '<div class="saved_notice admin-notice notice-green"><strong>' . apply_filters( "redux-saved-text-{$this->args['opt_name']}", __( 'Settings Saved!', 'redux-framework' ) ) . '</strong></div>';
                     }
-                    unset( $this->transients['last_save_mode'] );
 
+                    unset( $this->transients['last_save_mode'] );
+                    $this->transients['last_save_mode'] = 'remove';
+                    $this->set_transients();
                 }
 
                 /**
@@ -3764,7 +3779,6 @@
                 }
 
                 $this->set_transients();
-
             }
 
             /**
