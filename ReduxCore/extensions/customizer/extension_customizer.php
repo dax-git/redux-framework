@@ -127,7 +127,10 @@
 
             public function _override_values( $data ) {
                 if ( empty( $this->parent->options ) ) {
-                    $this->parent->get_options();
+                	// Commented this out because this is a filter that's actually called by $this->parent->get_options()
+                	// and if $this->parent->options is indeed empty calling the caller again will only result in another
+                	// call to this filter with another empty array and so forth... an infinite loop
+                    // $this->parent->get_options();
                 }
                 self::get_post_values();
 
