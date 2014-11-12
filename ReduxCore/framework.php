@@ -68,7 +68,7 @@
             // ATTENTION DEVS
             // Please update the build number with each push, no matter how small.
             // This will make for easier support when we ask users what version they are using.
-            public static $_version = '3.3.9.6';
+            public static $_version = '3.3.9.8';
             public static $_dir;
             public static $_url;
             public static $_upload_dir;
@@ -2730,7 +2730,7 @@
                 do_action( "redux/extensions/{$this->args['opt_name']}/before", $this );
 
                 foreach ( $folders as $folder ) {
-                    if ( $folder === '.' || $folder === '..' || ! is_dir( $path . $folder ) || substr( $folder, 0, 1 ) === '.' || substr( $folder, 0, 1 ) === '@' ) {
+                    if ( $folder === '.' || $folder === '..' || ! is_dir( $path . $folder ) || substr( $folder, 0, 1 ) === '.' || substr( $folder, 0, 1 ) === '@' || substr( $folder, 0, 4 ) === '_vti' ) {
                         continue;
                     }
 
@@ -2968,11 +2968,11 @@
                     return $plugin_options;
                 }
 
-                if ($this->transients['last_save_mode'] != 'remove') {
+//                if ($this->transients['last_save_mode'] != 'remove') {
                     $this->transients['last_save_mode'] = "normal"; // Last save mode
-                } else {
-                    $this->transients['last_save_mode'] = '';
-                }
+//               } else {
+//                    $this->transients['last_save_mode'] = '';
+//                }
 
 
                 // Validate fields (if needed)
@@ -3498,7 +3498,7 @@
                     }
 
                     unset( $this->transients['last_save_mode'] );
-                    $this->transients['last_save_mode'] = 'remove';
+                    //$this->transients['last_save_mode'] = 'remove';
                     $this->set_transients();
                 }
 
