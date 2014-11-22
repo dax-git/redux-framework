@@ -1621,12 +1621,12 @@
                     'border',
                     'dimensions',
                     'select',
-                    'thebestwp_select',
+                    'totaliswp_select',
                     'select_image',
                     'slider',
                     'spacing',
                     'typography',
-                    'thebestwp_typography',
+                    'totaliswp_typography',
                     'color_scheme',
                     'css_layout'
 
