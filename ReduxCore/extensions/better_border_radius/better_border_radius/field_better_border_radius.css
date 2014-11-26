@@ -1,0 +1,40 @@
+.redux-container-better_border_radius select {
+	vertical-align: top;
+}
+.redux-container-better_border_radius .select2-container {
+  margin-right: 10px;
+}
+.redux-container-better_border_radius .select_wrapper {
+  float: left;
+  width: inherit;
+  margin-right: 6px;
+}
+.redux-container-better_border_radius .select_wrapper select {
+  width: 80px;
+  float: left;
+}
+.redux-container-better_border_radius .field-better_border_radius-input {
+  margin-right: 10px;
+  margin-bottom: 7px;
+}
+.redux-container-better_border_radius .select2-container {
+  float: left;
+  display: block;
+}
+.redux-container-better_border_radius .wp-picker-container {
+  margin-top: 2px;
+}
+@media screen and (max-width: 782px) {
+  .redux-container-better_border_radius .field-better_border_radius-input input {
+    display: inline-block !important;
+    width: 100px !important;
+  }
+  .redux-container-better_border_radius .field-better_border_radius-input .add-on {
+    padding: 7px 4px;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .redux-container-better_border_radius .select_wrapper {
+    margin-top: 6px;
+  }
+}

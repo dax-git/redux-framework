@@ -1,0 +1,23 @@
+.redux-better_dimensions-container select,
+.redux-better_dimensions-container .select_wrapper {
+  width: 80px !important;
+  float: left;
+}
+.redux-better_dimensions-container .field-better_dimensions-input {
+  margin-right: 10px;
+  margin-bottom: 7px;
+}
+@media screen and (max-width: 782px) {
+  .redux-better_dimensions-container .field-better_dimensions-input input {
+    display: inline-block !important;
+    width: 100px !important;
+  }
+  .redux-better_dimensions-container .field-better_dimensions-input .add-on {
+    padding: 7px 4px;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .redux-better_dimensions-container .select_wrapper {
+    margin-top: 6px;
+  }
+}
