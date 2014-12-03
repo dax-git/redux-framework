@@ -1,5 +1,30 @@
 # Redux Framework Changelog
 
+## 3.3.9.15
+* Fixed:    #1856 - Illegal offset string warnings in framework.php.  Thanks @CGlingener.
+* Fixed:    #1874 - Required operator 'contains' and 'not_contains' not working with select set to multi.
+* Fixed:    #1829 - Required operator '=' and '!=' not working with select set to multi.
+
+## 3.3.9.14  
+* Fixed:    #1870 - Border field doubling up on px in output/compiler.
+* Added:    `hidden` argument for fields.
+* Added:    `hidden` argument for sections.
+
+## 3.3.9.12
+* Fixed:    #1868 - Improper panel render when opening expanded, when `open_expanded` set to true.
+* Added:    `hide_expand` argument, to hide the expand options button.
+
+## 3.3.9.11
+* Fixed:    #1865 - Sortable select not saving proper order.
+* Fixed:    #1864 - Footer z-index CSS adjusted.
+
+## 3.3.9.10
+* Fixed:    #1848 - Import-export filed buttons not functioning properly.
+
+## 3.3.9.9
+* Fixed:    #1834 - Wordpress data dealing with IDs as array keys not rendering properly.
+* Fixed:    #1830 - Font lists were added in quotes.  Thanks @karimhossenbux.
+
 ## 3.3.9.8
 * Fixed:    #1798 - Fixed lazy load JS to only load visible sections. Much more optimized.
 
