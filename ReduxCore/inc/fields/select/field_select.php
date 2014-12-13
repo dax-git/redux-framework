@@ -117,7 +117,7 @@
                             echo '<optgroup label="' . $k . '">';
                             
                             foreach($v as $opt => $val) {
-                                $this->make_option($opt, $val);
+                                $this->make_option($opt, $val, $k);
                             }
                             
                             echo '</optgroup>';
@@ -135,14 +135,14 @@
                 }
             } //function
 
-            private function make_option($id, $value) {
+            private function make_option($id, $value, $group_name = '') {
                 if ( is_array( $this->value ) ) {
                     $selected = ( is_array( $this->value ) && in_array( $id, $this->value ) ) ? ' selected="selected"' : '';
                 } else {
                     $selected = selected( $this->value, $id, false );
                 }
 
-                echo '<option value="' . $id . '"' . $selected . '>' . $value . '</option>';                
+                echo '<option data-group="' . $group_name . '" value="' . $id . '"' . $selected . '>' . $value . '</option>';                
             }
             
             /**
@@ -161,12 +161,21 @@
                     true
                 );
 
-                wp_enqueue_style(
+                redux_enqueue_style(
                     'redux-field-select-css',
                     ReduxFramework::$_url . 'inc/fields/select/field_select.css',
+                    ReduxFramework::$_dir . 'inc/fields/select',
+                    array(),
                     time(),
-                    true
-                );
+                    false
+                );                
+                
+//                wp_enqueue_style(
+//                    'redux-field-select-css',
+//                    ReduxFramework::$_url . 'inc/fields/select/field_select.css',
+//                    time(),
+//                    true
+//                );
             } //function
         } //class
     }
