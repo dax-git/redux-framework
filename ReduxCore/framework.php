@@ -69,7 +69,7 @@
             // Please update the build number with each push, no matter how small.
             // This will make for easier support when we ask users what version they are using.
             public static $_version = '3.3.9.15';
-            public static $_dir; 
+            public static $_dir;
             public static $_url;
             public static $_upload_dir;
             public static $_upload_url;
@@ -313,7 +313,7 @@
                     $this->get_options();
 
                     // Tracking
-                    $this->_tracking();
+                    // $this->_tracking();
 
                     // Set option with defaults
                     //add_action( 'init', array( &$this, '_set_default_options' ), 101 );
@@ -2646,7 +2646,7 @@
                                 if (isset($field['hidden']) && $field['hidden']) {
                                     $field['label_for'] = 'redux_hide_field';
                                 }
-                                
+
                                 add_settings_field(
                                     "{$fieldk}_field",
                                     $th,
@@ -3061,7 +3061,7 @@
                 foreach ( $sections as $k => $section ) {
                     if ( isset( $section['fields'] ) ) {
                         foreach ( $section['fields'] as $fkey => $field ) {
-                            
+
                             if( is_array( $field ) ) {
                                 $field['section_id'] = $k;
                             }
@@ -3263,7 +3263,7 @@
                 if (isset($section['hidden'])) {
                     $hide_section = ($section['hidden'] == true) ? ' hidden ' : '';
                 }
-                
+
                 $canBeSubSection = ( $k > 0 && ( ! isset( $sections[ ( $k ) ]['type'] ) || $sections[ ( $k ) ]['type'] != "divide" ) ) ? true : false;
 
                 if ( ! $canBeSubSection && isset( $section['subsection'] ) && $section['subsection'] == true ) {
@@ -3310,7 +3310,7 @@
                                 if (isset($sections[ $nextK ]['hidden'])) {
                                     $hide_sub = ($sections[ $nextK ]['hidden'] == true) ? ' hidden ' : '';
                                 }
-                                
+
                                 if ( ( isset( $this->args['icon_type'] ) && $this->args['icon_type'] == 'image' ) || ( isset( $sections[ $nextK ]['icon_type'] ) && $sections[ $nextK ]['icon_type'] == 'image' ) ) {
                                     //if( !empty( $this->args['icon_type'] ) && $this->args['icon_type'] == 'image' ) {
                                     $icon = ( ! isset( $sections[ $nextK ]['icon'] ) ) ? '' : '<img class="image_icon_type" src="' . $sections[ $nextK ]['icon'] . '" /> ';
@@ -3435,7 +3435,7 @@
 
                 $expanded = ( $this->args['open_expanded'] ) ? ' expanded' : '';
                 $hide_expand = $this->args['hide_expand'] ? ' style="display: none;"' : '';
-                
+
                 echo '<a href="javascript:void(0);" class="expand_options' . $expanded . '"' . $hide_expand . '>' . __( 'Expand', 'redux-framework' ) . '</a>';
                 echo '<div class="redux-action_bar">';
                 submit_button( __( 'Save Changes', 'redux-framework' ), 'primary', 'redux_save', false );
@@ -4185,7 +4185,7 @@
                     case '=':
                     case 'equals':
                         $data['operation'] = "=";
-                        
+
                         if (is_array($parentValue)) {
                             foreach($parentValue as $idx => $val) {
                                 if (is_array($checkValue)) {
@@ -4214,7 +4214,7 @@
                             }
                         }
                     break;
-                    
+
                     case '!=':
                     case 'not':
                         $data['operation'] = "!==";
@@ -4245,7 +4245,7 @@
                                 }
                             }
                         }
-                        
+
 //                        if ( is_array( $checkValue ) ) {
 //                            if ( ! in_array( $parentValue, $checkValue ) ) {
 //                                $return = true;
@@ -4296,7 +4296,7 @@
                         if (is_array($parentValue)) {
                             $parentValue = implode(',', $parentValue);
                         }
-                        
+
                         if (is_array($checkValue)) {
                             foreach($checkValue as $idx => $opt) {
                                 if ( strpos( $parentValue, $opt ) !== false ) {
@@ -4308,7 +4308,7 @@
                                 $return = true;
                             }
                         }
-                        
+
                         break;
                     case 'doesnt_contain':
                     case 'not_contain':
@@ -4327,7 +4327,7 @@
                                 $return = true;
                             }
                         }
-                        
+
                         break;
                     case 'is_empty_or':
                         if ( empty( $parentValue ) || $parentValue == $checkValue ) {
