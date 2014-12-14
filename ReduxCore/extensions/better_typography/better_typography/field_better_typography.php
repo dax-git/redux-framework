@@ -19,6 +19,9 @@
     if ( ! class_exists( 'ReduxFramework_better_typography' ) ) {
         class ReduxFramework_better_typography {
 
+        	public static $extension_dir = '';
+        	public static $extension_url = '';
+
             private $std_fonts = array(
                 "Arial, Helvetica, sans-serif"                         => "Arial, Helvetica, sans-serif",
                 "'Arial Black', Gadget, sans-serif"                    => "'Arial Black', Gadget, sans-serif",
@@ -53,9 +56,9 @@
                 $this->value  = $value;
 
 				// Set extension dir & url
-				if ( empty( $this->extension_dir ) ) {
-					$this->extension_dir = trailingslashit( str_replace( '\\', '/', dirname( __FILE__ ) ) );
-					$this->extension_url = site_url( str_replace( trailingslashit( str_replace( '\\', '/', ABSPATH ) ), '', $this->extension_dir ) );
+				if ( empty( self::$extension_dir ) ) {
+					self::$extension_dir = trailingslashit( str_replace( '\\', '/', dirname( __FILE__ ) ) );
+					self::$extension_url = site_url( str_replace( trailingslashit( str_replace( '\\', '/', ABSPATH ) ), '', self::$extension_dir ) );
 				}
 
                 // Shim out old arg to new
@@ -546,7 +549,7 @@
 
                 wp_enqueue_script(
                     'redux-field-better_typography-js',
-                    $this->extension_url . 'field_better_typography.js',
+                    self::$extension_url . 'field_better_typography.js',
                     array( 'jquery', 'select2-js', 'redux-js', 'jscolor' ),
                     time(),
                     true
@@ -560,7 +563,7 @@
 
                 wp_enqueue_style(
                     'redux-field-better_typography-css',
-                    $this->extension_url . 'field_better_typography.css',
+                    self::$extension_url . 'field_better_typography.css',
                     time(),
                     true
                 );
@@ -912,42 +915,42 @@
                 $gFile = dirname( __FILE__ ) . '/googlefonts.php';
 
                 // Weekly update
-                if ( isset( $this->parent->args['google_update_weekly'] ) && $this->parent->args['google_update_weekly'] && ! empty( $this->parent->args['google_api_key'] ) ) {
+                // if ( isset( $this->parent->args['google_update_weekly'] ) && $this->parent->args['google_update_weekly'] && ! empty( $this->parent->args['google_api_key'] ) ) {
 
-                    if ( file_exists( $gFile ) ) {
-                        // Keep the fonts updated weekly
-                        $weekback     = strtotime( date( 'jS F Y', time() + ( 60 * 60 * 24 * - 7 ) ) );
-                        $last_updated = filemtime( $gFile );
-                        if ( $last_updated < $weekback ) {
-                            unlink( $gFile );
-                        }
-                    }
-                }
+                //     if ( file_exists( $gFile ) ) {
+                //         // Keep the fonts updated weekly
+                //         $weekback     = strtotime( date( 'jS F Y', time() + ( 60 * 60 * 24 * - 7 ) ) );
+                //         $last_updated = filemtime( $gFile );
+                //         if ( $last_updated < $weekback ) {
+                //             unlink( $gFile );
+                //         }
+                //     }
+                // }
 
-                if ( ! file_exists( $gFile ) ) {
+                // if ( ! file_exists( $gFile ) ) {
 
-                    $result = wp_remote_get( apply_filters( 'redux-google-fonts-api-url', 'https://www.googleapis.com/webfonts/v1/webfonts?key=' ) . $this->parent->args['google_api_key'], array( 'sslverify' => false ) );
+                //     $result = wp_remote_get( apply_filters( 'redux-google-fonts-api-url', 'https://www.googleapis.com/webfonts/v1/webfonts?key=' ) . $this->parent->args['google_api_key'], array( 'sslverify' => false ) );
 
-                    if ( ! is_wp_error( $result ) && $result['response']['code'] == 200 ) {
-                        $result = json_decode( $result['body'] );
-                        foreach ( $result->items as $font ) {
-                            $this->parent->googleArray[ $font->family ] = array(
-                                'variants' => $this->getVariants( $font->variants ),
-                                'subsets'  => $this->getSubsets( $font->subsets )
-                            );
-                        }
+                //     if ( ! is_wp_error( $result ) && $result['response']['code'] == 200 ) {
+                //         $result = json_decode( $result['body'] );
+                //         foreach ( $result->items as $font ) {
+                //             $this->parent->googleArray[ $font->family ] = array(
+                //                 'variants' => $this->getVariants( $font->variants ),
+                //                 'subsets'  => $this->getSubsets( $font->subsets )
+                //             );
+                //         }
 
-                        if ( ! empty( $this->parent->googleArray ) ) {
-                            $this->parent->filesystem->execute( 'put_contents', $gFile, array( 'content' => "<?php return json_decode( '" . json_encode( $this->parent->googleArray ) . "', true );" ) );
-                        }
-                    }
-                }
+                //         if ( ! empty( $this->parent->googleArray ) ) {
+                //             $this->parent->filesystem->execute( 'put_contents', $gFile, array( 'content' => "<?php return json_decode( '" . json_encode( $this->parent->googleArray ) . "', true );" ) );
+                //         }
+                //     }
+                // }
 
-                if ( ! file_exists( $gFile ) ) {
-                    $this->parent->fonts['google'] = false;
+                // if ( ! file_exists( $gFile ) ) {
+                //     $this->parent->fonts['google'] = false;
 
-                    return;
-                }
+                //     return;
+                // }
 
                 if ( ! isset( $this->parent->fonts['google'] ) || empty( $this->parent->fonts['google'] ) ) {
 

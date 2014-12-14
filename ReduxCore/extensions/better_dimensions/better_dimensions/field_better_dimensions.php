@@ -7,6 +7,9 @@
     if ( ! class_exists( 'ReduxFramework_better_dimensions' ) ) {
         class ReduxFramework_better_dimensions {
 
+        	public static $extension_dir = '';
+        	public static $extension_url = '';
+
             /**
              * Field Constructor.
              * Required - must call the parent constructor, then assign field and value to vars, and obviously call the render field function
@@ -19,9 +22,9 @@
                 $this->value  = $value;
 
 				// Set extension dir & url
-				if ( empty( $this->extension_dir ) ) {
-					$this->extension_dir = trailingslashit( str_replace( '\\', '/', dirname( __FILE__ ) ) );
-					$this->extension_url = site_url( str_replace( trailingslashit( str_replace( '\\', '/', ABSPATH ) ), '', $this->extension_dir ) );
+				if ( empty( self::$extension_dir ) ) {
+					self::$extension_dir = trailingslashit( str_replace( '\\', '/', dirname( __FILE__ ) ) );
+					self::$extension_url = site_url( str_replace( trailingslashit( str_replace( '\\', '/', ABSPATH ) ), '', self::$extension_dir ) );
 				}
             } //function
 
@@ -275,7 +278,7 @@
             function enqueue() {
                 wp_enqueue_script(
                     'redux-field-better_dimensions-js',
-                    $this->extension_url . 'field_better_dimensions.js',
+                    self::$extension_url . 'field_better_dimensions.js',
                     array( 'jquery', 'select2-js', 'redux-js' ),
                     time(),
                     true
@@ -283,7 +286,7 @@
 
                 wp_enqueue_style(
                     'redux-field-better_dimensions-css',
-                    $this->extension_url . 'field_better_dimensions.css',
+                    self::$extension_url . 'field_better_dimensions.css',
                     time(),
                     true
                 );

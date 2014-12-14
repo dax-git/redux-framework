@@ -8,6 +8,9 @@
     if ( ! class_exists( 'ReduxFramework_better_select' ) ) {
         class ReduxFramework_better_select {
 
+        	public static $extension_dir = '';
+        	public static $extension_url = '';
+
             /**
              * Field Constructor.
              * Required - must call the parent constructor, then assign field and value to vars, and obviously call the render field function
@@ -20,9 +23,9 @@
                 $this->value  = $value;
 
 				// Set extension dir & url
-				if ( empty( $this->extension_dir ) ) {
-					$this->extension_dir = trailingslashit( str_replace( '\\', '/', dirname( __FILE__ ) ) );
-					$this->extension_url = site_url( str_replace( trailingslashit( str_replace( '\\', '/', ABSPATH ) ), '', $this->extension_dir ) );
+				if ( empty( self::$extension_dir ) ) {
+					self::$extension_dir = trailingslashit( str_replace( '\\', '/', dirname( __FILE__ ) ) );
+					self::$extension_url = site_url( str_replace( trailingslashit( str_replace( '\\', '/', ABSPATH ) ), '', self::$extension_dir ) );
 				}
             }
 
@@ -45,7 +48,7 @@
                     }
 
                     if ( $this->field['data'] == "elusive-icons" || $this->field['data'] == "elusive-icon" || $this->field['data'] == "elusive" ) {
-                        $icons_file = $this->extension_dir . 'elusive-icons.php';
+                        $icons_file = self::$extension_dir . 'elusive-icons.php';
                         /**
                          * filter 'redux-font-icons-file}'
                          *
@@ -64,7 +67,7 @@
                     }
 
                     if ( $this->field['data'] == "fontawesome-icons" || $this->field['data'] == "fontawesome-icon" || $this->field['data'] == "fontawesome" ) {
-                        $icons_file = $this->extension_dir . 'fontawesome-icons.php';
+                        $icons_file = self::$extension_dir . 'fontawesome-icons.php';
                         /**
                          * filter 'redux-font-icons-file}'
                          *
@@ -162,7 +165,7 @@
 
                 wp_enqueue_script(
                     'field-better_select-js',
-                    $this->extension_url . 'field_better_select.js',
+                    self::$extension_url . 'field_better_select.js',
                     array( 'jquery', 'select2-js', 'redux-js' ),
                     time(),
                     true
@@ -170,7 +173,7 @@
 
                 wp_enqueue_style(
                     'redux-field-better_select-css',
-                    $this->extension_url . 'field_better_select.css',
+                    self::$extension_url . 'field_better_select.css',
                     time(),
                     true
                 );

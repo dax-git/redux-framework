@@ -546,10 +546,13 @@
 
             // Fix conflicts with Visual Composer.
             public function vc_fixes() {
-                if ( redux_helpers::isFieldInUse( $this, 'ace_editor' ) ) {
-                    wp_dequeue_script( 'wpb_ace' );
-                    wp_deregister_script( 'wpb_ace' );
-                }
+            	// TotalisWP doesn't use the ace_editor at all but includes Visual Composer
+            	// so this call to isFieldInUse() is pointless and only slows everything down
+
+                // if ( redux_helpers::isFieldInUse( $this, 'ace_editor' ) ) {
+                //     wp_dequeue_script( 'wpb_ace' );
+                //     wp_deregister_script( 'wpb_ace' );
+                // }
             }
 
             public function network_admin_bar( $wp_admin_bar ) {

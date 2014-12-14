@@ -33,6 +33,9 @@
          */
         class ReduxFramework_better_color {
 
+        	public static $extension_dir = '';
+        	public static $extension_url = '';
+
             /**
              * Field Constructor.
              * Required - must call the parent constructor, then assign field and value to vars, and obviously call the render field function
@@ -47,9 +50,9 @@
                 $this->value  = $value;
 
 				// Set extension dir & url
-				if ( empty( $this->extension_dir ) ) {
-					$this->extension_dir = trailingslashit( str_replace( '\\', '/', dirname( __FILE__ ) ) );
-					$this->extension_url = site_url( str_replace( trailingslashit( str_replace( '\\', '/', ABSPATH ) ), '', $this->extension_dir ) );
+				if ( empty( self::$extension_dir ) ) {
+					self::$extension_dir = trailingslashit( str_replace( '\\', '/', dirname( __FILE__ ) ) );
+					self::$extension_url = site_url( str_replace( trailingslashit( str_replace( '\\', '/', ABSPATH ) ), '', self::$extension_dir ) );
 				}
             }
 
@@ -97,7 +100,7 @@
 
                 wp_enqueue_script(
                     'redux-field-better_color-js',
-                    $this->extension_url . 'field_better_color.js',
+                    self::$extension_url . 'field_better_color.js',
                     array( 'jquery', 'redux-js', 'jscolor' ),
                     time(),
                     true

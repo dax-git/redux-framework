@@ -124,7 +124,11 @@
             }
 
             public function in_field() {
-                $this->is_field = Redux_Helpers::isFieldInUse( $this->parent, 'import_export' );
+            	// TotalisWP always uses the import_export field so the call to isFieldInUse
+            	// is redundant (not to mention it leads to a ton of recursiveness because
+            	// of Redux_Helpers::recurive_array_search)
+                // $this->is_field = Redux_Helpers::isFieldInUse( $this->parent, 'import_export' );
+                $this->is_field = true;
             }
 
             public function render_tab() {
