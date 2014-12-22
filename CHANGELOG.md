@@ -1,5 +1,29 @@
 # Redux Framework Changelog
 
+## 3.3.9.27
+* Fixed:    Added PHP 5.2 support (ugh!) for SASS compiler.
+
+## 3.3.9.26
+* Fixed:    More SASS compiler tweaking.
+
+## 3.3.9.25
+* Fixed:    PHP errors when disabling SASS.
+
+## 3.3.9.24
+* Fixed     #1909 - malformed DIV class HTML in slider field.
+
+## 3.3.9.23
+* Removed   Argument for SASS compile file output location removed.  Didn't work, too much trouble.
+
+## 3.3.9.22
+* Fixed:    #1904 - select_image field not displaying saved value on page reload.
+
+## 3.3.9.21
+* Fixed:    SASS compile under multi-instance outputting incorrect CSS file
+
+## 3.3.9.20
+* Fixed:    redux-admin scss images converted to base64     
+
 ## 3.3.9.17
 * Added     SASS compiler for admin CSS.
 * Added     SASS to CSS for grunt compiler.

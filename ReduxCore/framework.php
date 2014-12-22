@@ -70,7 +70,7 @@
             // ATTENTION DEVS
             // Please update the build number with each push, no matter how small.
             // This will make for easier support when we ask users what version they are using.
-            public static $_version = '3.3.9.18';
+            public static $_version = '3.3.9.27';
             public static $_dir; 
             public static $_url;
             public static $_upload_dir;
@@ -203,6 +203,11 @@
                 // Pass parent pointer to function helper.
                 Redux_Functions::$_parent = $this;
 
+                $this->filesystem = new Redux_Filesystem( $this );
+                
+                //set redux upload folder
+                $this->set_redux_content();
+                
                 // Set values
                 $this->set_default_args();
                 $this->args = wp_parse_args( $args, $this->args );
@@ -297,10 +302,10 @@
                      */
                     do_action( 'redux/construct', $this );
 
-                    $this->filesystem = new Redux_Filesystem( $this );
+                    //$this->filesystem = new Redux_Filesystem( $this );
 
                     //set redux upload folder
-                    $this->set_redux_content();
+                    //$this->set_redux_content();
 
                     // Set the default values
                     $this->_default_cleanup();
@@ -424,8 +429,6 @@
                     }
                 }
 
-                reduxSassCompiler::init($this);
-                
                 /**
                  * Loaded hook
                  * action 'redux/loaded'
@@ -548,8 +551,15 @@
                     'dev_mode'                  => true,
                     'system_info'               => false,
                     'disable_tracking'          => false,
-                    'use_sass'                  => true,
-                    'output_sass'               => false,
+                    'sass' => array(
+                        'enabled'       => true,
+                        'page_output'   => false,
+//                        'output_url'   => self::$_upload_dir // ReduxFramework::$_upload_url
+                    )
+                    
+//                    'use_sass'                  => true,
+//                    'output_sass'               => false,
+//                    'output_file'   
                 );
             }
 
@@ -1674,6 +1684,7 @@
                 }
 
                 redux_enqueue_style(
+                    $this,
                     'redux-admin-css',
                     self::$_url . 'assets/css/redux-admin.css',
                     self::$_dir . 'assets/css/',
@@ -1682,7 +1693,7 @@
                     'all'
                 );                  
                 
-//                wp_register_style(
+//                wp_enqueue_style(
 //                    'redux-css',
 //                    self::$_url . 'assets/css/redux.css',
 //                    array( 'farbtastic' ),
@@ -1794,6 +1805,7 @@
                 ) {
 
                     redux_enqueue_style(
+                        $this,
                         'redux-color-picker-css',
                         ReduxFramework::$_url . 'assets/css/color-picker/color-picker.css',
                         ReduxFramework::$_dir . 'assets/css/color-picker',
@@ -1930,16 +1942,18 @@
                     }
                 }
 
-                if ($this->args['use_sass']) {
-                    reduxSassCompiler::compile_sass();
+                if ($this->args['sass']['enabled']) {
+                    reduxSassCompiler::compile_sass($this);
 
-                    wp_enqueue_style(
-                        'redux-sass-compile-css', 
-                        ReduxFramework::$_upload_url . $this->args['opt_name'] .  '-redux.css', 
-                        array(), 
-                        time(), 
-                        'all'
-                    );
+                    if (!$this->args['sass']['page_output']) {
+                        wp_enqueue_style(
+                            'redux-css', 
+                            ReduxFramework::$_upload_url . $this->args['opt_name'] .  '-redux.css', 
+                            array(), 
+                            time(), 
+                            'all'
+                        );
+                    }
                 }
                 
                 $this->localize_data['required']       = $this->required;
