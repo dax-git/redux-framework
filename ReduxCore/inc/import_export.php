@@ -56,7 +56,7 @@
              */
             public function render() {
 
-                $secret = md5( md5( AUTH_KEY . SECURE_AUTH_KEY ) . '-' . $this->parent->args['opt_name'] );
+                $secret = md5( AUTH_KEY . SECURE_AUTH_KEY ) . '-' . $this->parent->args['opt_name'];
 
                 if ( true == $this->is_field ) {
                     $fullWidth = $this->field_args['full_width'];
@@ -128,7 +128,7 @@
             	// is redundant (not to mention it leads to a ton of recursiveness because
             	// of Redux_Helpers::recurive_array_search)
                 // $this->is_field = Redux_Helpers::isFieldInUse( $this->parent, 'import_export' );
-                $this->is_field = true;
+                $this->is_field = false;
             }
 
             public function render_tab() {
@@ -176,7 +176,8 @@
             }
 
             function link_options() {
-                if ( ! isset( $_GET['secret'] ) || $_GET['secret'] != md5( md5( AUTH_KEY . SECURE_AUTH_KEY ) . '-' . $this->parent->args['opt_name'] ) ) {
+                if ( ! isset( $_GET['secret'] ) || $_GET['secret'] != md5( AUTH_KEY . SECURE_AUTH_KEY ) . '-' . $this->parent->args['opt_name'] ) {
+                	return;
                     wp_die( 'Invalid Secret for options use' );
                     exit;
                 }
@@ -193,7 +194,8 @@
             }
 
             public function download_options() {
-                if ( ! isset( $_GET['secret'] ) || $_GET['secret'] != md5( md5( AUTH_KEY . SECURE_AUTH_KEY ) . '-' . $this->parent->args['opt_name'] ) ) {
+                if ( ! isset( $_GET['secret'] ) || $_GET['secret'] != md5( AUTH_KEY . SECURE_AUTH_KEY ) . '-' . $this->parent->args['opt_name'] ) {
+                	return;
                     wp_die( 'Invalid Secret for options use' );
                     exit;
                 }
