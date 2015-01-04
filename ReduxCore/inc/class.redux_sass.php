@@ -21,12 +21,29 @@ if (!class_exists('reduxSassCompiler')) {
             }
         }
 
+        public static function is_scss_newer($dir, $filename){
+            $css_time   = filemtime($dir . '/' . $filename . '.css');
+            $scss_time  = filemtime($dir . '/' . $filename . '.scss');
+            
+            if ($scss_time > $css_time) {
+                echo 'css: ' . $css_time . '<br>';
+                echo 'scss: ' . $scss_time . '<br>';
+                
+                return true;
+            }
+            
+            return false;
+        }
+        
         public static function compile_sass($parent) {
             
             if (!empty(self::$path)) {
-                
-                require( "scssphp/scss.inc.php" );
 
+                if ( !class_exists( 'scssc' ) && !isset( $GLOBALS['redux_scss_compiler'] ) ) {
+                    $GLOBALS['redux_scss_compiler'] = true;
+                    require( "scssphp/scss.inc.php" );
+                }
+                
                 $scss = new scssc();
 
                 $scss->setImportPaths( self::$path );
@@ -36,20 +53,20 @@ if (!class_exists('reduxSassCompiler')) {
                 }
 
                 $new_css = '';
+                
                 foreach (self::$import as $import) {
                     $new_css .= $scss->compile( $import );
                 }
-
+                
                 if ($new_css != '') {
                     if ($parent->args['sass']['page_output']) {
                         echo '<style type="text/css" id="redux-' . $parent->args['opt_name'] . '">' . $new_css . '</style>';
                     } else {
-                        Redux_Functions::initWpFilesystem();
-
-                        global $wp_filesystem;
+                        $filesystem = $parent->filesystem;
 
                         $css_file   = Redux_Helpers::cleanFilePath( ReduxFramework::$_upload_dir . $parent->args['opt_name'] .  '-redux.css');
-                        $ret_val    = $wp_filesystem->put_contents($css_file, $new_css, FS_CHMOD_FILE);
+                        
+                        $ret_val    = $filesystem->execute('put_contents', $css_file, array('content' => $new_css));
                     }
                 }
             }
@@ -73,12 +90,22 @@ if (!function_exists ( 'redux_enqueue_style')) {
      */
     function redux_enqueue_style ($parent, $handle, $css_src, $scss_dir, $deps = array(), $ver = '', $media = false){
         if ($parent->args['sass']['enabled']) {
-            $path_parts = pathinfo($css_src);
+            //if ($parent->args['dev_mode'] || $parent->args['sass']['page_output']) {
+                $path_parts = pathinfo($css_src);
 
-            $filename   = $path_parts['filename'];
+                $filename   = $path_parts['filename'];
 
-            reduxSassCompiler::add_path($scss_dir);
-            reduxSassCompiler::add_import('@import "' . $filename . '.scss"');
+                $scss_dir = Redux_Helpers::cleanFilePath($scss_dir);
+                $scss_dir = untrailingslashit($scss_dir);
+                
+                //$css_src = Redux_Helpers::cleanFilePath($css_src);
+                //$css_src = untrailingslashit($css_src) . '/';
+                
+                //$is_diff = reduxSassCompiler::is_scss_newer($scss_dir, $filename);
+                
+                reduxSassCompiler::add_path($scss_dir);
+                reduxSassCompiler::add_import('@import "' . $filename . '.scss"');
+            //}
         } else {
             wp_enqueue_style(
                 $handle,

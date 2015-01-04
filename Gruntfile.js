@@ -7,7 +7,7 @@ module.exports = function( grunt ) {
     grunt.initConfig(
         {
             pkg: grunt.file.readJSON( 'package.json' ),
-
+    
             concat: {
                 options: {
                     separator: ';'
@@ -62,6 +62,7 @@ module.exports = function( grunt ) {
                     },
                     files: {
                         'ReduxCore/assets/js/redux.min.js': ['ReduxCore/assets/js/redux.min.js'],
+                        'ReduxCore/assets/js/vendor/spectrum/redux-spectrum.min.js': ['ReduxCore/assets/js/vendor/spectrum/redux-spectrum.js'],
                         'ReduxCore/assets/js/vendor/redux.select2.sortable.min.js': ['ReduxCore/assets/js/vendor/redux.select2.sortable.js'],
                         'ReduxCore/assets/js/import_export/import_export.min.js': ['ReduxCore/assets/js/import_export/import_export.js'],
                         'ReduxCore/assets/js/media/media.min.js': ['ReduxCore/assets/js/media/media.js'],
@@ -291,7 +292,7 @@ module.exports = function( grunt ) {
                     options: {
                         sourcemap: 'none',
                         style: 'compressed',
-                        noCache: true
+                        noCache: true,
                     },
                     
                     files: [{
@@ -391,7 +392,7 @@ module.exports = function( grunt ) {
                 dist: {
                     allFiles: ['ReduxCore/assets/css/redux-admin.scss']
                 }
-            }
+            },
         }
     );
 

@@ -1,5 +1,23 @@
 # Redux Framework Changelog
 
+## 3.3.9.32
+* Replaced: #1951 - Replaced develop branch of scssphp to master branch due to PHP 5.2 incompatibililty.
+
+## 3.3.9.31
+* Fixed:    #1943 - Removed premature DIV close.
+* Fixed:    #1945 - Media preview not rendering when default ID specified.
+
+## 3.3.9.30
+* Modified: #1930 - reorder 'psedo-class of link_color field.  Thanks @freddessaint
+* Modified: SASS compiler outputs to page by default.  Faster.
+* Fixed:    #1927 - Incorrect dir path to spectrum library in color_rgba field corrected.
+
+## 3.3.9.29
+* Modified: color_rgba field now usees spectrum color picker.  minicolors removed.  Just...too buggy.
+
+## 3.3.9.28
+* Modified: #1922 - Filesystem output function.
+
 ## 3.3.9.27
 * Fixed:    Added PHP 5.2 support (ugh!) for SASS compiler.
 

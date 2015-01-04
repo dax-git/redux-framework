@@ -70,7 +70,7 @@
             // ATTENTION DEVS
             // Please update the build number with each push, no matter how small.
             // This will make for easier support when we ask users what version they are using.
-            public static $_version = '3.3.9.27';
+            public static $_version = '3.3.9.32';
             public static $_dir; 
             public static $_url;
             public static $_upload_dir;
@@ -553,13 +553,8 @@
                     'disable_tracking'          => false,
                     'sass' => array(
                         'enabled'       => true,
-                        'page_output'   => false,
-//                        'output_url'   => self::$_upload_dir // ReduxFramework::$_upload_url
+                        'page_output'   => true,
                     )
-                    
-//                    'use_sass'                  => true,
-//                    'output_sass'               => false,
-//                    'output_file'   
                 );
             }
 
@@ -1635,7 +1630,7 @@
                 $min                      = Redux_Functions::isMin();
 
                 // Select2 business.  Fields:  Background, Border, Dimensions, Select, Slider, Typography
-                if ( Redux_Helpers::isFieldInUseByType( $this->fields, array(
+                $field_arr = array(
                     'background',
                     'border',
                     'dimensions',
@@ -1648,9 +1643,9 @@
                     'better_typography',
                     'color_scheme',
                     'css_layout'
-
-                ) )
-                ) {
+                );
+                
+                if ( Redux_Helpers::isFieldInUseByType( $this->fields, $field_arr ) ) {
 
                     // select2 CSS
                     wp_register_style(
@@ -3051,6 +3046,10 @@
                     &$plugin_options,
                     $this->options
                 ) ); // REMOVE
+
+                if ( !isset( $this->transients['changed_values'] ) ) {
+                    $this->transients[ 'changed_values' ] = array();
+                }
 
                 /**
                  * action 'redux/options/{opt_name}/validate'
