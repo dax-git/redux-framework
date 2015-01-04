@@ -58,6 +58,8 @@
         // ThemeCheck checks
         require_once( dirname( __FILE__ ) . '/inc/class.redux_themecheck.php' );
 
+        require_once( dirname( __FILE__ ) . '/inc/class.redux_sass.php' );
+
         /**
          * Main ReduxFramework class
          *
@@ -68,7 +70,7 @@
             // ATTENTION DEVS
             // Please update the build number with each push, no matter how small.
             // This will make for easier support when we ask users what version they are using.
-            public static $_version = '3.3.9.15';
+            public static $_version = '3.3.9.32';
             public static $_dir;
             public static $_url;
             public static $_upload_dir;
@@ -171,7 +173,7 @@
             private $hidden_perm_sections = array(); //  Hidden sections specified by 'permissions' arg.
             public $typography_preview = array();
             public $args = array();
-            public $filesystem = null;
+            public $filesystem  = null;
 
             /**
              * Class Constructor. Defines the args for the theme options class
@@ -200,6 +202,11 @@
 
                 // Pass parent pointer to function helper.
                 Redux_Functions::$_parent = $this;
+
+                $this->filesystem = new Redux_Filesystem( $this );
+
+                //set redux upload folder
+                $this->set_redux_content();
 
                 // Set values
                 $this->set_default_args();
@@ -295,10 +302,10 @@
                      */
                     do_action( 'redux/construct', $this );
 
-                    $this->filesystem = new Redux_Filesystem( $this );
+                    //$this->filesystem = new Redux_Filesystem( $this );
 
                     //set redux upload folder
-                    $this->set_redux_content();
+                    //$this->set_redux_content();
 
                     // Set the default values
                     $this->_default_cleanup();
@@ -313,7 +320,9 @@
                     $this->get_options();
 
                     // Tracking
-                    // $this->_tracking();
+                    if ( true != Redux_Helpers::isTheme( __FILE__ ) || ( true == Redux_Helpers::isTheme( __FILE__ ) && !$this->args['disable_tracking'] ) ) {
+                        // $this->_tracking();
+                    }
 
                     // Set option with defaults
                     //add_action( 'init', array( &$this, '_set_default_options' ), 101 );
@@ -541,6 +550,11 @@
                     'show_import_export'        => true,
                     'dev_mode'                  => true,
                     'system_info'               => false,
+                    'disable_tracking'          => false,
+                    'sass' => array(
+                        'enabled'       => true,
+                        'page_output'   => true,
+                    )
                 );
             }
 
@@ -1619,7 +1633,7 @@
                 $min                      = Redux_Functions::isMin();
 
                 // Select2 business.  Fields:  Background, Border, Dimensions, Select, Slider, Typography
-                if ( Redux_Helpers::isFieldInUseByType( $this->fields, array(
+                $field_arr = array(
                     'background',
                     'border',
                     'dimensions',
@@ -1632,9 +1646,9 @@
                     'better_typography',
                     'color_scheme',
                     'css_layout'
+                );
 
-                ) )
-                ) {
+                if ( Redux_Helpers::isFieldInUseByType( $this->fields, $field_arr ) ) {
 
                     // select2 CSS
                     wp_register_style(
@@ -1667,21 +1681,31 @@
                     wp_enqueue_script( 'select2-js' );
                 }
 
-                wp_register_style(
-                    'redux-css',
-                    self::$_url . 'assets/css/redux.css',
+                redux_enqueue_style(
+                    $this,
+                    'redux-admin-css',
+                    self::$_url . 'assets/css/redux-admin.css',
+                    self::$_dir . 'assets/css/',
                     array( 'farbtastic' ),
-                    filemtime( self::$_dir . 'assets/css/redux.css' ),
+                    time(),
                     'all'
                 );
 
-                wp_register_style(
-                    'admin-css',
-                    self::$_url . 'assets/css/admin.css',
-                    array( 'farbtastic' ),
-                    filemtime( self::$_dir . 'assets/css/admin.css' ),
-                    'all'
-                );
+//                wp_enqueue_style(
+//                    'redux-css',
+//                    self::$_url . 'assets/css/redux.css',
+//                    array( 'farbtastic' ),
+//                    filemtime( self::$_dir . 'assets/css/redux.css' ),
+//                    'all'
+//                );
+//
+//                wp_register_style(
+//                    'admin-css',
+//                    self::$_url . 'assets/css/admin.css',
+//                    array( 'farbtastic' ),
+//                    filemtime( self::$_dir . 'assets/css/admin.css' ),
+//                    'all'
+//                );
 
                 wp_register_style(
                     'redux-elusive-icon',
@@ -1733,7 +1757,7 @@
                     wp_register_style(
                         'redux-rtl-css',
                         self::$_url . 'assets/css/rtl.css',
-                        '',
+                        array('redux-css'),
                         filemtime( self::$_dir . 'assets/css/rtl.css' ),
                         'all'
                     );
@@ -1778,13 +1802,23 @@
                 ) )
                 ) {
 
-                    wp_enqueue_style(
+                    redux_enqueue_style(
+                        $this,
                         'redux-color-picker-css',
-                        self::$_url . 'assets/css/color-picker/color-picker.css',
-                        array( 'wp-color-picker' ),
-                        filemtime( self::$_dir . 'assets/css/color-picker/color-picker.css' ),
-                        'all'
+                        ReduxFramework::$_url . 'assets/css/color-picker/color-picker.css',
+                        ReduxFramework::$_dir . 'assets/css/color-picker',
+                        array(),
+                        time(),
+                        false
                     );
+
+//                    wp_enqueue_style(
+//                        'redux-color-picker-css',
+//                        self::$_url . 'assets/css/color-picker/color-picker.css',
+//                        array( 'wp-color-picker' ),
+//                        filemtime( self::$_dir . 'assets/css/color-picker/color-picker.css' ),
+//                        'all'
+//                    );
 
                     wp_enqueue_style( 'color-picker-css' );
 
@@ -1820,7 +1854,7 @@
                 // Embed the compress version unless in dev mode
                 // dev_mode = true
                 if ( isset( $this->args['dev_mode'] ) && $this->args['dev_mode'] == true ) {
-                    wp_enqueue_style( 'admin-css' );
+                    //wp_enqueue_style( 'admin-css' );
                     wp_register_script(
                         'redux-vendor',
                         self::$_url . 'assets/js/vendor.min.js',
@@ -1831,7 +1865,7 @@
 
                     // dev_mode - false
                 } else {
-                    wp_enqueue_style( 'redux-css' );
+                    //wp_enqueue_style( 'redux-css' );
                 }
 
                 $depArray = array( 'jquery', 'qtip-js', 'serializeForm-js', );
@@ -1886,6 +1920,7 @@
                                             // Also checking for dev_mode = true doesn't mess up the JS combinine.
                                             //if ( /*$this->args['dev_mode'] === false && */ isset($theField->extension_dir) && (!'' == $theField->extension_dir) /* || ($this->args['dev_mode'] === true) */) {
                                             $theField->enqueue();
+                                            //print_r($field['type']);
                                             //}
                                         }
 
@@ -1902,6 +1937,20 @@
                                 }
                             }
                         }
+                    }
+                }
+
+                if ($this->args['sass']['enabled']) {
+                    reduxSassCompiler::compile_sass($this);
+
+                    if (!$this->args['sass']['page_output']) {
+                        wp_enqueue_style(
+                            'redux-css',
+                            ReduxFramework::$_upload_url . $this->args['opt_name'] .  '-redux.css',
+                            array(),
+                            time(),
+                            'all'
+                        );
                     }
                 }
 
@@ -3000,6 +3049,10 @@
                     &$plugin_options,
                     $this->options
                 ) ); // REMOVE
+
+                if ( !isset( $this->transients['changed_values'] ) ) {
+                    $this->transients[ 'changed_values' ] = array();
+                }
 
                 /**
                  * action 'redux/options/{opt_name}/validate'

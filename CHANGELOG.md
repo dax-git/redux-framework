@@ -1,5 +1,57 @@
 # Redux Framework Changelog
 
+## 3.3.9.32
+* Replaced: #1951 - Replaced develop branch of scssphp to master branch due to PHP 5.2 incompatibililty.
+
+## 3.3.9.31
+* Fixed:    #1943 - Removed premature DIV close.
+* Fixed:    #1945 - Media preview not rendering when default ID specified.
+
+## 3.3.9.30
+* Modified: #1930 - reorder 'psedo-class of link_color field.  Thanks @freddessaint
+* Modified: SASS compiler outputs to page by default.  Faster.
+* Fixed:    #1927 - Incorrect dir path to spectrum library in color_rgba field corrected.
+
+## 3.3.9.29
+* Modified: color_rgba field now usees spectrum color picker.  minicolors removed.  Just...too buggy.
+
+## 3.3.9.28
+* Modified: #1922 - Filesystem output function.
+
+## 3.3.9.27
+* Fixed:    Added PHP 5.2 support (ugh!) for SASS compiler.
+
+## 3.3.9.26
+* Fixed:    More SASS compiler tweaking.
+
+## 3.3.9.25
+* Fixed:    PHP errors when disabling SASS.
+
+## 3.3.9.24
+* Fixed     #1909 - malformed DIV class HTML in slider field.
+
+## 3.3.9.23
+* Removed   Argument for SASS compile file output location removed.  Didn't work, too much trouble.
+
+## 3.3.9.22
+* Fixed:    #1904 - select_image field not displaying saved value on page reload.
+
+## 3.3.9.21
+* Fixed:    SASS compile under multi-instance outputting incorrect CSS file
+
+## 3.3.9.20
+* Fixed:    redux-admin scss images converted to base64     
+
+## 3.3.9.17
+* Added     SASS compiler for admin CSS.
+* Added     SASS to CSS for grunt compiler.
+
+## 3.3.9.16
+* Added     SASS compiler for fields.
+
+## 3.3.9.16
+* Updated:  select2 3.5.2
+
 ## 3.3.9.15
 * Fixed:    #1856 - Illegal offset string warnings in framework.php.  Thanks @CGlingener.
 * Fixed:    #1874 - Required operator 'contains' and 'not_contains' not working with select set to multi.
