@@ -1,5 +1,75 @@
 # Redux Framework Changelog
 
+## 3.4.2.6
+* Fixed:   #1478 - Import/export failing when two instances if Redux in use.  Thanks, @desaiuditd!
+* Fixed:   Section field not indenting properly, if at all.
+
+## 3.4.2.5
+* Added:   #2031 - Proper CSS sanitization for compliancy with WP.org. 
+
+## 3.4.2.4
+* Fixed:   #2027 - added isset()
+
+## 3.4.2.3
+* Fixed:   #2019 - Reset issues with PHP 5.2.  Thanks a bunch, @Webcreations907!
+
+## 3.4.2.2
+* Fixed:   #2023: Issue with custom submenus in menu.
+
+## 3.4.2.1
+* Fixed:   #2025: Issue with select sorting.
+
+## 3.4.2
+* Update:  ACE Editor.  Thanks @corradomatt.
+
+## 3.4.1
+* Fixed:   Small filesystem option with bad filter key reference.
+* Added:   Small return if $section filter returned the section empty.
+
+## 3.4.0
+* WP.org Release
+
+## 3.3.10.7
+* Fixed:    Reset section hook firing too early.
+
+## 3.3.10.6
+* Modified: The Redux Repeater field has landed!
+
+## 3.3.10.5
+* Fixed:    #1983 - color_rgba not outputting default values on first load (before save).
+
+## 3.3.10.4
+* Fixed:    Google font enqueues with opt_name to avoid collision with multiple Redux instances.
+
+## 3.3.10.3
+* Fixed:    #1980 - JS errors with sorter & sortable.
+* Fixed:    color_rgba field outputting incorrect information via output/compiler.
+
+## 3.3.10.2
+* Fixed:    #1979 - Goole fonts not properly loading in typography dropdown.
+
+## 3.3.10.1
+* Fixed:    Undefined index error on MU installs.
+
+## 3.3.10
+* Removed:  SASS compile of field CSS, for the time being.  Compiler remains in core.
+* Improved: Panel load time, most notable when not in dev_mode.  Better for your clients.  :)
+* Updated:  Elusive Font library.
+* Fixed:    #1961 - color_rgba field defaulting to black on reset.
+
+## 3.3.9.35
+* Fixed:    #1941 - Datepicker opened off screen.
+* Fixed:    #1756, #1957 - Slider issues.  Thanks @FFIN!
+* Fixed:    #1960 - Duplicate slide when clicking Add.  Again, thanks to @FFIN for the fix.
+* Added:    New filter: apply_filters 'redux/validate/{opt_name}/before_validation'
+* Fixed:    #1745 - Adding settings submenu to empty submenu now works.  Many, many thanks to @No3x for cracking this one!
+
+## 3.3.9.34
+* Fixed:    #1955 - Undefined index rgba in output routine.
+
+## 3.3.9.33
+* Modified: #1947 - Added display:none to TR tag under info field.
+
 ## 3.3.9.32
 * Replaced: #1951 - Replaced develop branch of scssphp to master branch due to PHP 5.2 incompatibililty.
 
