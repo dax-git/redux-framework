@@ -559,7 +559,7 @@
 
                 wp_enqueue_script(
                     'jscolor',
-                    TOTALISWP_ASSETS_URI . '/jscolor/jscolor.js',
+                    TOTALISWP_VENDOR_URI . '/jscolor/jscolor.js',
                     array(),
                     time(),
                     true
