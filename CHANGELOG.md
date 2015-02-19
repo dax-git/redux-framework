@@ -1,5 +1,22 @@
 # Redux Framework Changelog
 
+## 3.4.3.1
+* Modified: Templates now have versioning with a warning (dev_mode only) if they are outdated from the core templates.
+
+## 3.4.3
+* Modified: Ajax saving now has overlay during save to avoid confusion for users.
+
+## 3.4.2.9
+* Modified: Template files even more for simplicity and ease.
+* Modified: Saving. Redux now has the ajax_save argument if you want it!
+* Modified: Validation warnings now work.
+
+## 3.4.2.8
+* Fixed:    Changed set_transient function to public to avoid errors in new templating code.
+
+## 3.4.2.7
+* Modified: Entire panel template is now decoupled from the theme and implemented with many filters for easy customization.
+
 ## 3.4.2.6
 * Fixed:   #1478 - Import/export failing when two instances if Redux in use.  Thanks, @desaiuditd!
 * Fixed:   Section field not indenting properly, if at all.
