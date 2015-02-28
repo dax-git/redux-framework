@@ -83,7 +83,7 @@
                     }
                 );
 
-                el.find( 'input.redux-better_border-units' ).on(
+                el.find( 'select.redux-better_border-units' ).on(
                     'change', function() {
                         $( this ).parents( '.redux-field:first' ).find( '.redux-better_border-input' ).change();
                     }

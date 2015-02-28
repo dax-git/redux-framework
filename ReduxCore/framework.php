@@ -992,7 +992,8 @@ if ( !class_exists ( 'ReduxFramework' ) ) {
                             $data[ $size_name ] = $size_name . ' - ' . $size_attrs[ 'width' ] . ' x ' . $size_attrs[ 'height' ];
                         }
                     } else if ( $type == "elusive-icons" || $type == "elusive-icon" || $type == "elusive" ||
-                            $type == "font-icon" || $type == "font-icons" || $type == "icons"
+                            $type == "font-icon" || $type == "font-icons" || $type == "icons" ||
+                            $type == "fontawesome-icons" || $type == "fontawesome-icon" || $type == "fontawesome"
                     ) {
 
                         /**

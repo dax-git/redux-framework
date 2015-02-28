@@ -63,7 +63,7 @@
                     }
                 );
 
-                el.find( 'input.redux-better_dimensions-units' ).on(
+                el.find( 'select.redux-better_dimensions-units' ).on(
                     'change', function() {
                         $( this ).parents( '.redux-field:first' ).find( '.redux-better_dimensions-input' ).change();
                     }

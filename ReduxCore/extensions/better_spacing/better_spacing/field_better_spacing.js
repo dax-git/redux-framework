@@ -74,7 +74,7 @@
                     }
                 );
 
-                el.find( 'input.redux-better_spacing-units' ).on(
+                el.find( 'select.redux-better_spacing-units' ).on(
                     'change', function() {
                         $( this ).parents( '.redux-field:first' ).find( '.redux-better_spacing-input' ).change();
                     }
